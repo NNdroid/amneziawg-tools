@@ -581,6 +581,10 @@ static bool process_line(struct config_ctx *ctx, const char *line)
 			ret = parse_bool(&ctx->device->disable_cookies, "DisableCookies", value);
 			if (ret)
 				ctx->device->flags |= WGDEVICE_HAS_DISABLE_COOKIES;
+		} else if (key_match("IP4P")) {
+			ret = parse_bool(&ctx->device->ip4p, "IP4P", value);
+			if (ret)
+				ctx->device->flags |= WGDEVICE_HAS_IP4P;
 		} else {
 			goto error;
 		}
@@ -929,6 +933,12 @@ struct wgdevice *config_read_cmd(const char *argv[], int argc)
 			if (!parse_bool(&device->disable_cookies, "disable-cookies", argv[1]))
 				goto error;
 			device->flags |= WGDEVICE_HAS_DISABLE_COOKIES;
+			argv += 2;
+			argc -= 2;
+		} else if (!strcmp(argv[0], "ip4p") && argc >= 2 && !peer) {
+			if (!parse_bool(&device->ip4p, "ip4p", argv[1]))
+				goto error;
+			device->flags |= WGDEVICE_HAS_IP4P;
 			argv += 2;
 			argc -= 2;
 		} else if (!strcmp(argv[0], "peer") && argc >= 2) {

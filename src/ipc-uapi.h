@@ -105,6 +105,8 @@ static int userspace_set_device(struct wgdevice *dev)
 		fprintf(f, "random_trailers=%u\n", dev->random_trailers);
 	if (dev->flags & WGDEVICE_HAS_DISABLE_COOKIES)
 		fprintf(f, "disable_cookies=%u\n", dev->disable_cookies);
+	if (dev->flags & WGDEVICE_HAS_IP4P)
+		fprintf(f, "ip4p=%u\n", dev->ip4p);
 
 	for_each_wgpeer(dev, peer) {
 		key_to_hex(hex, peer->public_key);
@@ -318,6 +320,9 @@ static int userspace_get_device(struct wgdevice **out, const char *iface)
 		} else if (!peer && !strcmp(key, "disable_cookies")) {
 			dev->disable_cookies = NUM(1U);
 			dev->flags |= WGDEVICE_HAS_DISABLE_COOKIES;
+		} else if (!peer && !strcmp(key, "ip4p")) {
+			dev->ip4p = NUM(1U);
+			dev->flags |= WGDEVICE_HAS_IP4P;
 		} else if (!strcmp(key, "public_key")) {
 			struct wgpeer *new_peer = calloc(1, sizeof(*new_peer));
 

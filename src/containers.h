@@ -104,6 +104,7 @@ enum {
 	WGDEVICE_HAS_MAX_HANDSHAKE_ATTEMPTS = 1U << 27,
 	WGDEVICE_HAS_RANDOM_TRAILERS = 1U << 28,
 	WGDEVICE_HAS_DISABLE_COOKIES = 1U << 29,
+	WGDEVICE_HAS_IP4P = 1U << 30,
 };
 
 struct wgdevice {
@@ -133,7 +134,7 @@ struct wgdevice {
 		max_handshake_attempts;
 	uint8_t header_protection_key[WG_KEY_LEN];
 	char *i1, *i2, *i3, *i4, *i5;
-	bool random_trailers, disable_cookies;
+	bool random_trailers, disable_cookies, ip4p;
 };
 
 #define for_each_wgpeer(__dev, __peer) for ((__peer) = (__dev)->first_peer; (__peer); (__peer) = (__peer)->next_peer)

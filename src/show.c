@@ -263,6 +263,8 @@ static void pretty_print(struct wgdevice *device)
 		terminal_printf("  " TERMINAL_BOLD "random trailers" TERMINAL_RESET ": %s\n", device->random_trailers ? "on" : "off");
 	if (device->flags & WGDEVICE_HAS_DISABLE_COOKIES)
 		terminal_printf("  " TERMINAL_BOLD "disable cookies" TERMINAL_RESET ": %s\n", device->disable_cookies ? "on" : "off");
+	if (device->flags & WGDEVICE_HAS_IP4P)
+		terminal_printf("  " TERMINAL_BOLD "ip4p" TERMINAL_RESET ": %s\n", device->ip4p ? "on" : "off");
 
 	if (device->first_peer) {
 		sort_peers(device);
@@ -329,6 +331,7 @@ static void dump_print(struct wgdevice *device, bool with_interface)
 	printf("%s\t", u16_range_to_string(device->max_handshake_attempts));
 	printf("%s\t", device->random_trailers ? "on" : "off");
 	printf("%s\t", device->disable_cookies ? "on" : "off");
+	printf("%s\t", device->ip4p ? "on" : "off");
 
 	if (device->fwmark)
 		printf("0x%x\n", device->fwmark);
@@ -481,6 +484,10 @@ static bool ugly_print(struct wgdevice *device, const char *param, bool with_int
 		if (with_interface)
 			printf("%s\t", device->name);
 		printf("%s\n", device->disable_cookies ? "on" : "off");
+	} else if (!strcmp(param, "ip4p")) {
+		if (with_interface)
+			printf("%s\t", device->name);
+		printf("%s\n", device->ip4p ? "on" : "off");
 	} else if (!strcmp(param, "endpoints")) {
 		for_each_wgpeer(device, peer) {
 			if (with_interface)

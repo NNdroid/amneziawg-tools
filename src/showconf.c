@@ -99,6 +99,8 @@ int showconf_main(int argc, const char *argv[])
 		printf("RandomTrailers = %s\n", device->random_trailers ? "on" : "off");
 	if (device->flags & WGDEVICE_HAS_DISABLE_COOKIES)
 		printf("DisableCookies = %s\n", device->disable_cookies ? "on" : "off");
+	if (device->flags & WGDEVICE_HAS_IP4P)
+		printf("IP4P = %s\n", device->ip4p ? "on" : "off");
 
 	printf("\n");
 	for_each_wgpeer(device, peer) {
